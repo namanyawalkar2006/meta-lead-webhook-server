@@ -14,3 +14,13 @@ Automated integration tests were implemented using **Jest** and **Supertest** to
 1. Install dependencies:
    ```bash
    npm install
+## System Architecture & Data Flow
+
+```mermaid
+graph TD
+    A[Meta Lead Ads / Webhook Trigger] -->|GET /webhook Verification| B[Node.js Express Server]
+    A -->|POST /webhook Lead Payload| B
+    B -->|Check hub.verify_token| C{Valid Token?}
+    C -->|Yes| D[Return 200 OK + hub.challenge]
+    C -->|No| E[Return 403 Forbidden]
+    B -->|Process Lead Event| F[Log Payload & Respond 200 OK]
